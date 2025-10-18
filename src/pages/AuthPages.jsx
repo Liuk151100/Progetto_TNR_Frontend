@@ -1,16 +1,21 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import axiosInstance from "../../data/axios";
+import { useNavigate } from "react-router-dom";
 
 export default function AuthPages() {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
-    name: "",
+    nome: "",
+    cognome: "",
     email: "",
+    dataDiNascita: "",
     password: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const navigate = useNavigate()
 
   const googleLogInPath = `${import.meta.env.VITE_BACKEND_HOST}${import.meta.env.VITE_GOOGLE_PATH}`;
 
@@ -31,25 +36,31 @@ export default function AuthPages() {
     setSuccess(null);
 
     try {
+
       const endpoint = isLogin ? "/auth/login" : "/auth/register";
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await axiosInstance.post(
+        endpoint,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-      const data = await response.json();
 
-      if (!response.ok) {
+      const data = response.data
+
+      if (!response) {
         throw new Error(data.message || "Errore nella richiesta");
       }
 
       if (isLogin) {
         // Salva il token JWT (puoi anche usare localStorage o context API)
-        localStorage.setItem("token", data.token);
+        localStorage.setItem("token", data.jwt);
         setSuccess("Login effettuato con successo!");
+        navigate("/")
+        window.location.reload(); // 🔄 forza il refresh completo
       } else {
         setSuccess("Registrazione completata! Ora puoi effettuare il login.");
         setIsLogin(true);
@@ -71,17 +82,42 @@ export default function AuthPages() {
 
         <form onSubmit={handleSubmit}>
           {!isLogin && (
-            <div className="mb-3">
-              <label className="form-label">Nome</label>
-              <input
-                type="text"
-                name="name"
-                className="form-control"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-            </div>
+            <>
+              <div className="mb-3">
+                <label className="form-label">Nome</label>
+                <input
+                  type="text"
+                  name="nome"
+                  className="form-control"
+                  value={formData.nome}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Cognome</label>
+                <input
+                  type="text"
+                  name="cognome"
+                  className="form-control"
+                  value={formData.cognome}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Data di nascita</label>
+                <input
+                  type="text"
+                  name="dataDiNascita"
+                  className="form-control"
+                  value={formData.dataDiNascita}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </>
           )}
 
           <div className="mb-3">
@@ -129,7 +165,7 @@ export default function AuthPages() {
             <a
               variant="light"
               className="d-flex align-items-center border shadow-sm px-3 py-2 rounded-3"
-              style={{textDecoration:"none"}}
+              style={{ textDecoration: "none" }}
               href={googleLogInPath}
             >
               {/* Logo Google */}

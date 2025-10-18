@@ -29,7 +29,7 @@ export default function Header() {
           {/* --- AREA SEMPRE VISIBILE: REGISTER / LOGIN / ICONA --- */}
   
           <div className="d-flex align-items-center order-lg-2">
-            {!loggedUser && (
+            {!token && (
               <>
                 {/* <Button
                   variant="outline-dark"
@@ -52,7 +52,7 @@ export default function Header() {
               </>
             )}
             {/* ICONA UTENTE CON DROPDOWN */}
-            {loggedUser && (
+            {token && (
               <NavDropdown
                 align="end"
                 title={<PersonCircle size={26} color="black" />}

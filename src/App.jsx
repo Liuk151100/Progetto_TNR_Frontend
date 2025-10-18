@@ -17,14 +17,14 @@ export default function App() {
   // };
 
   // const [theme, setTheme] = useState(getAutoTheme);
-  const [userOverride, setUserOverride] = useState(false);
+  // const [userOverride, setUserOverride] = useState(false);
 
-  useEffect(() => {
-    if (!userOverride) {
-      const id = setInterval(() => setTheme(getAutoTheme()), 60000);
-      return () => clearInterval(id);
-    }
-  }, [userOverride]);
+  // useEffect(() => {
+  //   if (!userOverride) {
+  //     const id = setInterval(() => setTheme(getAutoTheme()), 60000);
+  //     return () => clearInterval(id);
+  //   }
+  // }, [userOverride]);
 
   // const toggleTheme = () => {
   //   setUserOverride(true);
