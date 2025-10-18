@@ -21,13 +21,13 @@ body, html, #root {
 } */
 
 /* Override Bootstrap colors */
-.navbar-light {
+/* .navbar-light {
   background-color: var(--white) !important;
 }
 
 .navbar-dark {
   background-color: var(--black) !important;
-}
+} */
 
 .text-warning {
   color: var(--orange) !important;
@@ -88,5 +88,45 @@ body, html, #root {
   }
   .pilot-card {
     width: 90%;
+  }
+}
+
+
+/* 🔹 Toolbar centrata e adattiva */
+.rbc-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center !important;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* 🔹 Su mobile: layout verticale compatto */
+@media (max-width: 768px) {
+  .rbc-calendar {
+    font-size: 0.75rem;
+  }
+
+  .rbc-toolbar {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .rbc-btn-group {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .rbc-header {
+    padding: 4px 0;
+  }
+
+  .rbc-month-view {
+    min-height: 400px; /* evita celle schiacciate */
+    overflow-y: auto;  /* 🔥 scroll verticale se il mese è lungo */
   }
 }

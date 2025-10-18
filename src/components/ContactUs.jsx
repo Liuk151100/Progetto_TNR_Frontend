@@ -8,7 +8,7 @@ export default function ContactUs() {
             <section className="contactSection py-5">
                 <Container>
                     <h2 className="text-center mb-5 fw-bold section-title">
-                        Contact Us
+                        Contatti
                     </h2>
                      {/* <Form>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
