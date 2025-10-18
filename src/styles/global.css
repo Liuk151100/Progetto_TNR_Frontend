@@ -1,0 +1,92 @@
+:root {
+  --orange: #FF6A00;
+  --black: #000000;
+  --white: #FFFFFF;
+}
+
+body, html, #root {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+/* .app-root.light {
+  background-color: #ffffff;
+  color: #0b1220;
+}
+
+.app-root.gray {
+  background-color: #262626;
+  color: #eceff4;
+} */
+
+/* Override Bootstrap colors */
+.navbar-light {
+  background-color: var(--white) !important;
+}
+
+.navbar-dark {
+  background-color: var(--black) !important;
+}
+
+.text-warning {
+  color: var(--orange) !important;
+}
+
+.btn-warning {
+  background-color: var(--orange);
+  border-color: var(--orange);
+}
+
+.team-section , .contactSection {
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+}
+
+.section-title {
+  letter-spacing: 1px;
+  color: #222;
+  text-transform: uppercase;
+  border-bottom: 3px solid #FF6A00;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+.pilot-card {
+  border: none;
+  border-radius: 1rem;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: #fff;
+}
+
+.pilot-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.pilot-img-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+
+.pilot-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.pilot-card:hover .pilot-img {
+  transform: scale(1.08);
+}
+
+@media (max-width: 576px) {
+  .section-title {
+    font-size: 1.5rem;
+  }
+  .pilot-card {
+    width: 90%;
+  }
+}
