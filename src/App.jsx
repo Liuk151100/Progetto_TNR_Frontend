@@ -36,16 +36,16 @@ export default function App() {
     <BrowserRouter>
       <AuthProvider>
         {/* <div className={`app-root ${theme}`}> */}
-          <Header />
-          <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path="/auth/google-callback" element={<GoogleCallback />} />
-            <Route path='/events' element={<EventCalendar />} />
-            <Route path="*" element={<NotFound />} />
-            <Route path="/Login" element={<AuthPages />} />
+        <Header />
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path="/auth/google-callback" element={<GoogleCallback />} />
+          <Route path='/events' element={<EventCalendar />} />
+          <Route path="*" element={<NotFound />} />
+          <Route path="/Login" element={<AuthPages />} />
 
-          </Routes>
-          <Footer />
+        </Routes>
+        <Footer />
         {/* </div> */}
       </AuthProvider>
     </BrowserRouter>

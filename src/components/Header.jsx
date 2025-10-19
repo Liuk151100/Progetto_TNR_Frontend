@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar, Nav, Container, Button, NavDropdown } from "react-bootstrap";
 import { PersonCircle } from "react-bootstrap-icons";
 import { useAuthContext } from "../contexts/authContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import logo from "../assets/Loghi/LOGO-VETTORIALE-NEW-RACING.svg";
 
 const NAV_LINKS = [
   { label: "TEAM", path: "team" },
@@ -28,6 +29,7 @@ const UserMenu = ({ token, logout }) => {
     );
   }
 
+
   return (
     <NavDropdown
       align="end"
@@ -47,7 +49,7 @@ const UserMenu = ({ token, logout }) => {
 };
 
 export default function Header() {
-  const { token, logout } = useAuthContext();
+  const { token, loggedUser, logout } = useAuthContext();
 
   return (
     <header>
@@ -56,7 +58,7 @@ export default function Header() {
           {/* LOGO */}
           <Navbar.Brand href="/">
             <img
-              src="./src/assets/Loghi/LOGO-VETTORIALE-NEW-RACING.svg"
+              src={logo}
               alt="Logo"
               style={{ height: "50px", width: "auto" }}
             />

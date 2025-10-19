@@ -1,7 +1,8 @@
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axiosInstance from "../../data/axios";
 import { Card, Col, Container, Row } from "react-bootstrap";
+import { useAuthContext } from "../contexts/authContext";
 
 export default function TeamSection() {
     const [pilots, setPilots] = useState([]);
@@ -56,7 +57,7 @@ export default function TeamSection() {
                                         {pilot.dataDiNascita}
                                     </Card.Text>
                                     <Card.Text>
-                                        {`${pilot.ruolo} ${pilot.categoria}`}
+                                        {pilot.ruolo!= "admin" ? `${pilot.ruolo} ${pilot.categoria}`:"Presidente e pilota di kart"}
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
