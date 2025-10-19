@@ -28,7 +28,7 @@ function EventCalendar() {
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [newEvent, setNewEvent] = useState({ titolo: "", start: null, end: null, luogo: "" });
+  const [newEvent, setNewEvent] = useState({ titolo: "", start: "", end: "", luogo: "" });
   const [view, setView] = useState("month");
   const [isAdmin, setIsAdmin] = useState(false);
   const [listaPartecipanti, setListaPartecipanti] = useState([]);
@@ -85,10 +85,17 @@ function EventCalendar() {
     fetchPartecipanti();
   }, [selectedEvent]);
 
+  // --- Utility per formattare Date per input type datetime-local
+  const formatDateForInput = (date) => {
+    if (!date) return "";
+    const local = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+    return local.toISOString().slice(0, 16);
+  };
+
   // --- Handle selezione slot (admin)
   const handleSelectSlot = ({ start, end }) => {
     if (!isAdmin) return;
-    setNewEvent({ titolo: "", start, end, luogo: "" });
+    setNewEvent({ titolo: "", start: formatDateForInput(start), end: formatDateForInput(end), luogo: "" });
     setSelectedEvent(null);
     setModalIsOpen(true);
   };
@@ -96,25 +103,51 @@ function EventCalendar() {
   // --- Handle selezione evento
   const handleSelectEvent = (event) => {
     setSelectedEvent(event);
-    if (isAdmin) setNewEvent({ ...event });
+    if (isAdmin) {
+      setNewEvent({
+        titolo: event.titolo,
+        luogo: event.luogo,
+        start: formatDateForInput(event.start),
+        end: formatDateForInput(event.end),
+      });
+    }
     setModalIsOpen(true);
   };
 
   // --- Salvataggio evento
-  const handleSaveEvent = () => {
-    if (!newEvent.titolo) {
-      alert("Inserisci un titolo!");
+  const handleSaveEvent = async () => {
+    if (!newEvent.titolo || !newEvent.start || !newEvent.end || !newEvent.luogo) {
+      alert("Tutti i campi sono obbligatori!");
       return;
     }
-    if (selectedEvent) {
-      setEvents(events.map(evt =>
-        evt._id === selectedEvent._id ? { ...newEvent, _id: selectedEvent._id } : evt
-      ));
-    } else {
-      setEvents([...events, { ...newEvent, _id: Date.now() }]);
+
+    const startDate = new Date(newEvent.start);
+    const endDate = new Date(newEvent.end);
+
+    try {
+      if (selectedEvent) {
+        await axiosInstance.patch(`/events/${selectedEvent._id}`, {
+          titolo: newEvent.titolo,
+          start: startDate,
+          end: endDate,
+          luogo: newEvent.luogo,
+        });
+      } else {
+        await axiosInstance.post(`/events`, {
+          titolo: newEvent.titolo,
+          start: startDate,
+          end: endDate,
+          luogo: newEvent.luogo,
+        });
+      }
+
+      setModifyEvent(true);
+      setModalIsOpen(false);
+      setSelectedEvent(null);
+    } catch (err) {
+      console.error(err);
+      alert("Errore durante il salvataggio dell'evento");
     }
-    setModalIsOpen(false);
-    setSelectedEvent(null);
   };
 
   // --- Eliminazione evento
@@ -148,7 +181,7 @@ function EventCalendar() {
   };
 
   return (
-    <div style={{ padding: "20px", height: "80vh", maxHeight: "80vh", overflowY: "auto", display: "flex", flexDirection: "column" }}>
+    <div style={{ padding: "20px", height: "80vh", overflowY: "auto", display: "flex", flexDirection: "column" }}>
       <h2 className="text-center mb-3">Calendario Eventi</h2>
       {!isAdmin && <p className="text-center text-muted">Modalità utente: sola lettura (con possibilità di partecipare)</p>}
 
@@ -163,11 +196,25 @@ function EventCalendar() {
             view={view}
             onView={(newView) => setView(newView)}
             toolbar={true}
-            style={{ width: "100%", minHeight: "500px", borderRadius: "10px", backgroundColor: "white", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}
+            style={{
+              width: "100%",
+              minHeight: "500px",
+              borderRadius: "10px",
+              backgroundColor: "white",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            }}
             selectable={isAdmin && !modalIsOpen}
             onSelectSlot={handleSelectSlot}
             onSelectEvent={handleSelectEvent}
-            messages={{ next: "Avanti", previous: "Indietro", today: "Oggi", month: "Mese", week: "Settimana", day: "Giorno", agenda: "Agenda" }}
+            messages={{
+              next: "Avanti",
+              previous: "Indietro",
+              today: "Oggi",
+              month: "Mese",
+              week: "Settimana",
+              day: "Giorno",
+              agenda: "Agenda",
+            }}
           />
         </div>
       </div>
@@ -178,18 +225,49 @@ function EventCalendar() {
         contentLabel="Gestione Evento"
         style={{
           overlay: { backgroundColor: "rgba(0,0,0,0.4)", zIndex: 9999 },
-          content: { width: "320px", maxWidth: "90vw", padding: "20px", borderRadius: "12px", backgroundColor: "white", position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", zIndex: 10000 }
+          content: {
+            width: "350px",
+            maxWidth: "90vw",
+            padding: "20px",
+            borderRadius: "12px",
+            backgroundColor: "white",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          },
         }}
       >
         {isAdmin ? (
           <>
             <h3>{selectedEvent ? "Modifica Evento" : "Nuovo Evento"}</h3>
-            <input type="text" placeholder="Titolo evento" value={newEvent.titolo} onChange={e => setNewEvent({ ...newEvent, titolo: e.target.value })} style={{ width: "100%", marginBottom: 10 }} />
-            <input type="text" placeholder="Luogo evento" value={newEvent.luogo} onChange={e => setNewEvent({ ...newEvent, luogo: e.target.value })} style={{ width: "100%", marginBottom: 10 }} />
-            <p>Dal: {newEvent.start?.toLocaleString() || "-"}<br />Al: {newEvent.end?.toLocaleString() || "-"}</p>
+            <input type="text" placeholder="Titolo evento"
+              value={newEvent.titolo}
+              onChange={(e) => setNewEvent({ ...newEvent, titolo: e.target.value })}
+              style={{ width: "100%", marginBottom: 10 }}
+            />
+            <input type="text" placeholder="Luogo evento"
+              value={newEvent.luogo}
+              onChange={(e) => setNewEvent({ ...newEvent, luogo: e.target.value })}
+              style={{ width: "100%", marginBottom: 10 }}
+            />
+            <p>Dal:</p>
+            <input type="datetime-local"
+              value={newEvent.start}
+              onChange={(e) => setNewEvent({ ...newEvent, start: e.target.value })}
+              style={{ width: "100%", marginBottom: 10 }}
+            />
+            <p>Al:</p>
+            <input type="datetime-local"
+              value={newEvent.end}
+              onChange={(e) => setNewEvent({ ...newEvent, end: e.target.value })}
+              style={{ width: "100%", marginBottom: 10 }}
+            />
+
             <div style={{ marginTop: 12 }}>
               <button onClick={handleSaveEvent} style={{ marginRight: "10px" }}>Salva</button>
-              {selectedEvent && <button onClick={handleDeleteEvent} style={{ marginRight: "10px", color: "red" }}>Elimina</button>}
+              {selectedEvent && (
+                <button onClick={handleDeleteEvent} style={{ marginRight: "10px", color: "red" }}>Elimina</button>
+              )}
               <button onClick={() => { setModalIsOpen(false); setSelectedEvent(null); }}>Annulla</button>
             </div>
           </>
