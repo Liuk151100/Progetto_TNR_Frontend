@@ -2,6 +2,8 @@
   --orange: #FF6A00;
   --black: #000000;
   --white: #FFFFFF;
+  --light-gray: #f3f3f3;
+  --medium-gray: #e0e0e0;
 }
 
 body, html, #root {
@@ -129,4 +131,153 @@ body, html, #root {
     min-height: 400px; /* evita celle schiacciate */
     overflow-y: auto;  /* 🔥 scroll verticale se il mese è lungo */
   }
+}
+
+
+/* Sfondo generale pagina */
+.profile-bg {
+  background: linear-gradient(180deg, var(--light-gray) 0%, var(--medium-gray) 100%);
+  color: var(--black);
+  font-family: 'Segoe UI', sans-serif;
+  box-sizing: border-box;
+  padding: 2rem 0;
+}
+
+/* Card principale */
+.profile-card {
+  background: linear-gradient(145deg, #ffffff, #f8f8f8);
+  color: var(--black);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+/* Header racing */
+.profile-header {
+  background: linear-gradient(90deg, var(--orange), #ff8c33);
+  color: var(--white);
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-bottom: 3px solid #d35400;
+}
+
+/* Avatar */
+.avatar-wrapper {
+  position: relative;
+  padding: 5px;
+  background: var(--white);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.avatar-wrapper:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(255, 106, 0, 0.6);
+}
+
+.avatar-img {
+  border-radius: 50%;
+}
+
+/* Form controlli */
+.form-control {
+  background-color: var(--white);
+  color: var(--black);
+  border: 1px solid #ccc;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus {
+  box-shadow: 0 0 0 0.25rem rgba(255, 106, 0, 0.25);
+  border-color: var(--orange);
+}
+
+.form-control:disabled {
+  background-color: #f5f5f5 !important;
+  color: #777;
+}
+
+/* Pulsanti racing */
+.btn-danger,
+.btn-success,
+.btn-outline-light,
+.btn-outline-primary {
+  border-radius: 0.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-danger {
+  background-color: var(--orange);
+  border: 1px solid var(--orange);
+  color: var(--white);
+}
+
+.btn-danger:hover {
+  background-color: #ff8533;
+  border-color: #ff8533;
+}
+
+.btn-success {
+  background-color: #00c851;
+  border-color: #00c851;
+  color: var(--white);
+}
+
+.btn-success:hover {
+  background-color: #00e06b;
+}
+
+/* Link ai documenti */
+.list-group-item {
+  background-color: var(--white);
+  border: 1px solid #ddd;
+}
+
+.list-group-item a {
+  color: var(--orange);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.list-group-item a:hover {
+  color: #ff8533;
+  text-decoration: underline;
+}
+
+/* Separatori e titoli */
+hr {
+  border: 0;
+  border-top: 2px solid var(--orange);
+  opacity: 0.8;
+}
+
+h4, h5 {
+  color: var(--black);
+}
+
+.badge {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.badge.bg-danger {
+  background-color: var(--orange) !important;
+  color: var(--white);
+}
+
+.badge.bg-secondary {
+  background-color: #666 !important;
+  color: var(--white);
+}
+
+/* Effetti generali */
+.profile-card:hover {
+  box-shadow: 0 0 25px rgba(255, 106, 0, 0.25);
+}
+
+input::placeholder {
+  color: #aaa !important;
 }

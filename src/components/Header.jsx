@@ -7,13 +7,15 @@ import logo from "../assets/Loghi/LOGO-VETTORIALE-NEW-RACING.svg";
 
 const NAV_LINKS = [
   { label: "TEAM", path: "team" },
-  { label: "GALLERIA", path: "gallery" },
   { label: "EVENTI", path: "events" },
   { label: "SAFEGUARDING", path: "safe" },
-  { label: "CONTATTI", path: "contacts" },
+  { label: "CONTATTACI", path: "contacts" },
 ];
 
-const UserMenu = ({ token, logout }) => {
+
+
+const UserMenu = ({ token, logout, loggedUser }) => {
+
   if (!token) {
     return (
       <Button
@@ -37,10 +39,14 @@ const UserMenu = ({ token, logout }) => {
       id="user-dropdown"
       className="ms-3"
     >
+      <NavDropdown.Item style={{fontWeight:"bold"}}>
+        {loggedUser?.nome || ""} {loggedUser?.cognome || ""}
+      </NavDropdown.Item>
+      <NavDropdown.Divider />
       <NavDropdown.Item to="/me" as={Link}>
         Profile
       </NavDropdown.Item>
-      <NavDropdown.Divider />
+      
       <NavDropdown.Item to="/" as={Link} onClick={logout}>
         Logout
       </NavDropdown.Item>
@@ -49,7 +55,7 @@ const UserMenu = ({ token, logout }) => {
 };
 
 export default function Header() {
-  const { token, loggedUser, logout } = useAuthContext();
+  const { token, logout, loggedUser } = useAuthContext();
 
   return (
     <header>
@@ -66,7 +72,7 @@ export default function Header() {
 
           {/* MOBILE: TOGGLE + USER MENU (sempre affianco al logo) */}
           <div className="d-flex align-items-center d-lg-none ms-auto">
-            <UserMenu token={token} logout={logout} />
+            <UserMenu token={token} logout={logout} loggedUser={loggedUser} />
             <Navbar.Toggle aria-controls="navbarResponsive" className="ms-2 border-0" />
           </div>
 
@@ -86,7 +92,7 @@ export default function Header() {
 
             {/* DESKTOP: USER MENU a destra dei link */}
             <div className="d-none d-lg-flex ms-auto">
-              <UserMenu token={token} logout={logout} />
+              <UserMenu token={token} logout={logout} loggedUser={loggedUser}/>
             </div>
           </Navbar.Collapse>
         </Container>

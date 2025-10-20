@@ -8,6 +8,7 @@ import EventCalendar from './pages/EventCalendar';
 import NotFound from './pages/NotFound';
 import AuthPages from './pages/AuthPages';
 import GoogleCallback from './components/GoogleCallback';
+import UserProfile from './pages/Profile';
 
 
 export default function App() {
@@ -43,6 +44,7 @@ export default function App() {
           <Route path='/events' element={<EventCalendar />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/Login" element={<AuthPages />} />
+          <Route path="/me" element={<UserProfile />} />
 
         </Routes>
         <Footer />
