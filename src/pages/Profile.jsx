@@ -243,7 +243,7 @@ const UserProfile = () => {
                         <ListGroup>
                             {user?.docPersonali.map((doc, idx) => (
                                 <ListGroup.Item key={idx}>
-                                    {doc instanceof File ? doc.name : <a href={doc} target="_blank" rel="noreferrer">{doc}</a>}
+                                    {doc instanceof File ? <a>File da caricare: {doc.name}</a> : <a href={doc} target="_blank" rel="noreferrer">{doc}</a>}
                                 </ListGroup.Item>
                             ))}
 
