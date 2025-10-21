@@ -239,15 +239,16 @@ const UserProfile = () => {
                             Documenti Personali
                         </h5>
                         <hr className="border-danger opacity-75" />
-                        {user?.docPersonali.lenght > 0 ?
-                            <ListGroup>
-                                {user?.docPersonali.map((doc, idx) => (
-                                    <ListGroup.Item key={idx}>
-                                        {doc instanceof File ? doc.name : <a href={doc} target="_blank" rel="noreferrer">{doc}</a>}
-                                    </ListGroup.Item>
-                                ))}
-                            </ListGroup>
-                            : <h3>Nessun documento caricato</h3>}
+
+                        <ListGroup>
+                            {user?.docPersonali.map((doc, idx) => (
+                                <ListGroup.Item key={idx}>
+                                    {doc instanceof File ? doc.name : <a href={doc} target="_blank" rel="noreferrer">{doc}</a>}
+                                </ListGroup.Item>
+                            ))}
+
+                        </ListGroup>
+                        {loggedUser?.docPersonali.length == 0 && <h3>Nessun file caricato</h3>}
                         {editMode && (
                             <Form.Group controlId="formFileMultiple" className="mb-3">
                                 <Form.Label>Documenti personali</Form.Label>
