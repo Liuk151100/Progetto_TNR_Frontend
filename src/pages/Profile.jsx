@@ -19,16 +19,19 @@ import {
     Speedometer2,
     PersonFill,
     Border,
+    FileX,
 } from "react-bootstrap-icons";
 import axios from "axios";
 import axiosInstance from "../../data/axios";
 import { useAuthContext } from "../contexts/authContext";
+import { useNavigate } from "react-router-dom";
 
 const UserProfile = () => {
     const [editMode, setEditMode] = useState(false);
 
     const [user, setUser] = useState(null);
     const { loggedUser } = useAuthContext();
+    
     var nextRequest
 
     useEffect(() => {
@@ -81,9 +84,11 @@ const UserProfile = () => {
                 formData.append("nome", user.nome);
                 formData.append("cognome", user.cognome);
                 formData.append("email", user.email);
+                console.log(user.docPersonali)
                 user.docPersonali.forEach((doc) => {
                     if (doc instanceof File) {
                         formData.append("docPersonali", doc);
+                        console.log(doc)
                     }
                 });
 
@@ -94,6 +99,7 @@ const UserProfile = () => {
                 console.log("Dati aggiornati 2:", user);
                 setEditMode(false);
                 window.location.reload();
+
             } catch (err) {
                 console.error("Errore nel salvataggio:", err);
             }
@@ -108,6 +114,32 @@ const UserProfile = () => {
             ...prevUser,
             [name]: [...(prevUser[name] || []), ...newFiles],
         }));
+    };
+
+    const handleRemoveDoc = async (index) => {
+        try {
+            //Rimuovi il file dallo stato
+            const updatedDocs = user.docPersonali.filter((_, i) => i !== index);
+            setUser(prev => ({ ...prev, docPersonali: updatedDocs }));
+
+            //Prepara il FormData per inviare i documenti rimasti
+            const formData = new FormData();
+            formData.append("docPersonali", JSON.stringify(updatedDocs));
+
+            //Chiamata PATCH al backend
+            const { data } = await axiosInstance.patch(
+                `/users/docPersonali/${loggedUser?._id}`,
+                formData,
+                { headers: { "Content-Type": "multipart/form-data" } }
+            );
+
+            //Aggiorna lo stato con la risposta del server
+            setUser(data);
+            window.location.reload();
+
+        } catch (err) {
+            console.error("Errore durante l'eliminazione del documento:", err);
+        }
     };
 
     return (
@@ -149,7 +181,7 @@ const UserProfile = () => {
                                         className="shadow avatar-img"
                                     />
                                 </div>
-                                <h5 className="mt-3 text-light fw-bold">
+                                <h5 className="mt-3 fw-bold">
                                     {user?.nome} {user?.cognome}
                                 </h5>
 
@@ -240,13 +272,50 @@ const UserProfile = () => {
                         </h5>
                         <hr className="border-danger opacity-75" />
 
-                        <ListGroup>
+                        {/* <ListGroup>
                             {user?.docPersonali.map((doc, idx) => (
-                                <ListGroup.Item key={idx}>
+                                <ListGroup.Item key={idx} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
                                     {doc instanceof File ? <a>File da caricare: {doc.name}</a> : <a href={doc} target="_blank" rel="noreferrer">{doc}</a>}
+                                    {editMode && (
+                                        <Button onClick={() => handleRemoveDoc(idx)}>Elimina</Button>
+                                    )}
                                 </ListGroup.Item>
                             ))}
 
+                        </ListGroup> */}
+                        <ListGroup>
+                            {user?.docPersonali?.map((doc, idx) => (
+                                <ListGroup.Item
+                                    key={idx}
+                                    style={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        alignItems: "center",
+                                        width: "100%",
+                                    }}
+                                >
+                                    {doc instanceof File ? (
+                                        // Caso: file appena aggiunto dal frontend
+                                        <span>File da caricare: {doc.name}</span>
+                                    ) : (
+                                        // Caso: file già salvato nel database
+                                        <a
+                                            href={`${doc.path}`} // o il tuo URL base, es. `${API_URL}/${doc.path}`
+                                            download={doc.originalName || "documento"}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                        >
+                                            {doc.originalName || doc.path.split("/").pop()}
+                                        </a>
+                                    )}
+
+                                    {editMode && (
+                                        <Button variant="danger" size="sm" onClick={() => handleRemoveDoc(idx)}>
+                                            Elimina
+                                        </Button>
+                                    )}
+                                </ListGroup.Item>
+                            ))}
                         </ListGroup>
                         {loggedUser?.docPersonali.length == 0 && <h3>Nessun file caricato</h3>}
                         {editMode && (

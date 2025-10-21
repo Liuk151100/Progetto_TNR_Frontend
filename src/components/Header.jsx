@@ -5,13 +5,6 @@ import { useAuthContext } from "../contexts/authContext";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/Loghi/LOGO-VETTORIALE-NEW-RACING.svg";
 
-const NAV_LINKS = [
-  { label: "TEAM", path: "team" },
-  { label: "EVENTI", path: "events" },
-  { label: "SAFEGUARDING", path: "safe" },
-  { label: "CONTATTACI", path: "contacts" },
-];
-
 
 
 const UserMenu = ({ token, logout, loggedUser }) => {
@@ -79,15 +72,40 @@ export default function Header() {
           {/* COLLAPSIBLE LINKS */}
           <Navbar.Collapse id="navbarResponsive" className="mt-2 mt-lg-0 d-lg-flex flex-grow-1 justify-content-start">
             <Nav className="my-2 my-lg-0" navbarScroll>
-              {NAV_LINKS.map((link) => (
+  
                 <Nav.Link
-                  key={link.path}
-                  href={link.path}
+                  key="team"
+                  href="team"
                   style={{ fontSize: "1em", fontWeight: "bold", marginRight: "1.5rem" }}
                 >
-                  {link.label}
+                  TEAM
                 </Nav.Link>
-              ))}
+
+                <Nav.Link
+                  key="events"
+                  href="events"
+                  style={{ fontSize: "1em", fontWeight: "bold", marginRight: "1.5rem" }}
+                >
+                  EVENTI
+                </Nav.Link>
+
+                <Nav.Link
+                  key="safe"
+                  href="safe"
+                  style={{ fontSize: "1em", fontWeight: "bold", marginRight: "1.5rem" }}
+                >
+                  SAFEGUARDING
+                </Nav.Link>
+
+                <Nav.Link
+                  key=""
+                  href=""
+                  onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior : "smooth" })}
+                  style={{ fontSize: "1em", fontWeight: "bold", marginRight: "1.5rem" }}
+                >
+                  CONTATTACI
+                </Nav.Link>
+
             </Nav>
 
             {/* DESKTOP: USER MENU a destra dei link */}
