@@ -14,6 +14,7 @@ import {
 import {
     PencilSquare,
     CheckCircle,
+    Trash,
     PlusCircle,
     Upload,
     Speedometer2,
@@ -31,7 +32,8 @@ const UserProfile = () => {
 
     const [user, setUser] = useState(null);
     const { loggedUser } = useAuthContext();
-    
+    const navigate = useNavigate();
+
     var nextRequest
 
     useEffect(() => {
@@ -142,6 +144,18 @@ const UserProfile = () => {
         }
     };
 
+    const handleRemoveUser = async (id) => {
+        try {
+            await axiosInstance.delete(`/users/${id}`)
+            navigate("/");
+            window.location.reload();
+
+
+        } catch (err) {
+            console.error("Errore durante la cancellazione dell'utente");
+        }
+    }
+
     return (
         <div className="profile-bg" style={{ height: editMode ? "100vh" : "80vh" }}>
             <Container className="py-4">
@@ -151,6 +165,10 @@ const UserProfile = () => {
                             <Speedometer2 size={26} />
                             <h4 className="mb-0 fw-bold text-uppercase">Profilo Utente</h4>
                         </div>
+                        <Button variant="danger" onClick={() => handleRemoveUser(loggedUser._id)} className="fw-bold" style={{backgroundColor:"red"}}>
+                            <Trash className="me-2" />
+                            Elimina account
+                        </Button>
                         {editMode ? (
                             <Button variant="success" onClick={handleSave} className="fw-bold">
                                 <CheckCircle className="me-2" />

@@ -9,6 +9,7 @@ import logo from "../assets/Loghi/LOGO-VETTORIALE-NEW-RACING.svg";
 
 const UserMenu = ({ token, logout, loggedUser }) => {
 
+
   if (!token) {
     return (
       <Button
@@ -32,14 +33,14 @@ const UserMenu = ({ token, logout, loggedUser }) => {
       id="user-dropdown"
       className="ms-3"
     >
-      <NavDropdown.Item style={{fontWeight:"bold"}}>
+      <NavDropdown.Item style={{ fontWeight: "bold" }}>
         {loggedUser?.nome || ""} {loggedUser?.cognome || ""}
       </NavDropdown.Item>
       <NavDropdown.Divider />
       <NavDropdown.Item to="/me" as={Link}>
         Profile
       </NavDropdown.Item>
-      
+
       <NavDropdown.Item to="/" as={Link} onClick={logout}>
         Logout
       </NavDropdown.Item>
@@ -49,7 +50,18 @@ const UserMenu = ({ token, logout, loggedUser }) => {
 
 export default function Header() {
   const { token, logout, loggedUser } = useAuthContext();
+  const navigate = useNavigate();
 
+  const scrollToContactUs = () => {
+    navigate("/")
+    // Aspetta un attimo che la home venga renderizzata
+  setTimeout(() => {
+    window.scrollTo({
+      top: document.body.scrollHeight,
+      behavior: "smooth",
+    });
+  }, 500); // 0.5 secondi di ritardo (puoi regolare)
+  }
   return (
     <header>
       <Navbar expand="lg" bg="light" className="px-3 py-2 shadow-sm">
@@ -72,49 +84,58 @@ export default function Header() {
           {/* COLLAPSIBLE LINKS */}
           <Navbar.Collapse id="navbarResponsive" className="mt-2 mt-lg-0 d-lg-flex flex-grow-1 justify-content-start">
             <Nav className="my-2 my-lg-0" navbarScroll>
-  
-                <Nav.Link
-                  key="team"
-                  href="team"
-                  style={{ fontSize: "1em", fontWeight: "bold", marginRight: "1.5rem" }}
-                >
-                  TEAM
-                </Nav.Link>
 
-                <Nav.Link
-                  key="events"
-                  href="events"
-                  style={{ fontSize: "1em", fontWeight: "bold", marginRight: "1.5rem" }}
-                >
-                  EVENTI
-                </Nav.Link>
+              <Nav.Link
+                key="team"
+                href="team"
+                style={{ fontSize: "1em", fontWeight: "bold", marginRight: "1.5rem" }}
+              >
+                TEAM
+              </Nav.Link>
 
-                <Nav.Link
-                  key="safe"
-                  href="safe"
-                  style={{ fontSize: "1em", fontWeight: "bold", marginRight: "1.5rem" }}
-                >
-                  SAFEGUARDING
-                </Nav.Link>
+              <Nav.Link
+                key="events"
+                href="events"
+                style={{ fontSize: "1em", fontWeight: "bold", marginRight: "1.5rem" }}
+              >
+                EVENTI
+              </Nav.Link>
 
+              <Nav.Link
+                key="safe"
+                href="safe"
+                style={{ fontSize: "1em", fontWeight: "bold", marginRight: "1.5rem" }}
+              >
+                SAFEGUARDING
+              </Nav.Link>
+
+              <Nav.Link
+                key=""
+                href=""
+                onClick={scrollToContactUs}
+                style={{ fontSize: "1em", fontWeight: "bold", marginRight: "1.5rem" }}
+              >
+                CONTATTACI
+              </Nav.Link>
+              {token && loggedUser?.ruolo == "admin" &&
                 <Nav.Link
-                  key=""
-                  href=""
-                  onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior : "smooth" })}
+                  key="newUser"
+                  href="newUser"
                   style={{ fontSize: "1em", fontWeight: "bold", marginRight: "1.5rem" }}
                 >
-                  CONTATTACI
+                  CREA UTENTE
                 </Nav.Link>
+              }
 
             </Nav>
 
             {/* DESKTOP: USER MENU a destra dei link */}
             <div className="d-none d-lg-flex ms-auto">
-              <UserMenu token={token} logout={logout} loggedUser={loggedUser}/>
+              <UserMenu token={token} logout={logout} loggedUser={loggedUser} />
             </div>
           </Navbar.Collapse>
         </Container>
       </Navbar>
-    </header>
+    </header >
   );
 }

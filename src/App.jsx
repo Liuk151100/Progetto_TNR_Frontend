@@ -9,6 +9,7 @@ import NotFound from './pages/NotFound';
 import AuthPages from './pages/AuthPages';
 import GoogleCallback from './components/GoogleCallback';
 import UserProfile from './pages/Profile';
+import CreateUser from './pages/CreateUser';
 
 
 export default function App() {
@@ -45,6 +46,7 @@ export default function App() {
           <Route path="*" element={<NotFound />} />
           <Route path="/Login" element={<AuthPages />} />
           <Route path="/me" element={<UserProfile />} />
+          <Route path="/newUser" element={<CreateUser />} />
 
         </Routes>
         <Footer />
