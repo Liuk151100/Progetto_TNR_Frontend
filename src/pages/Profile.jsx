@@ -45,9 +45,10 @@ const UserProfile = () => {
                 email: loggedUser.email,
                 dataDiNascita: loggedUser.dataDiNascita,
                 avatar: loggedUser?.avatar,
-                ruolo: loggedUser.ruolo,
-                categoria: loggedUser.categoria,
-                docPersonali: loggedUser.docPersonali || [],
+                ruolo: loggedUser?.ruolo,
+                password: "",
+                categoria: loggedUser?.categoria,
+                docPersonali: loggedUser?.docPersonali || [],
             });
         }
     }, [loggedUser]);
@@ -57,7 +58,13 @@ const UserProfile = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+        if (name != "password"){
         setUser({ ...user, [name]: value });
+        } else {
+            if (value != "") {
+                setUser({ ...user, [name]: value });
+            }
+        }
     };
 
     const handleSave = async () => {
@@ -68,6 +75,9 @@ const UserProfile = () => {
             formData.append("email", user.email);
             formData.append("dataDiNascita", user.dataDiNascita);
             formData.append("avatar", user.avatar);
+            if (user.password != ""){
+                formData.append("password", user.password)
+            }
 
             await axiosInstance.patch(`/users/avatar/${loggedUser?._id}`, formData, {
                 headers: { "Content-Type": "multipart/form-data" },
@@ -165,25 +175,27 @@ const UserProfile = () => {
                             <Speedometer2 size={26} />
                             <h4 className="mb-0 fw-bold text-uppercase">Profilo Utente</h4>
                         </div>
-                        <Button variant="danger" onClick={() => handleRemoveUser(loggedUser._id)} className="fw-bold" style={{backgroundColor:"red"}}>
-                            <Trash className="me-2" />
-                            Elimina account
-                        </Button>
-                        {editMode ? (
-                            <Button variant="success" onClick={handleSave} className="fw-bold">
-                                <CheckCircle className="me-2" />
-                                Salva
+                       <div>
+                            <Button variant="danger" onClick={() => handleRemoveUser(loggedUser._id)} className="fw-bold" style={{backgroundColor:"red", marginRight:"20px"}}>
+                                <Trash className="me-2" />
+                                Elimina account
                             </Button>
-                        ) : (
-                            <Button
-                                variant="danger"
-                                onClick={() => setEditMode(true)}
-                                className="fw-bold"
-                            >
-                                <PencilSquare className="me-2" />
-                                Modifica
-                            </Button>
-                        )}
+                            {editMode ? (
+                                <Button variant="success" onClick={handleSave} className="fw-bold">
+                                    <CheckCircle className="me-2" />
+                                    Salva
+                                </Button>
+                            ) : (
+                                <Button
+                                    variant="danger"
+                                    onClick={() => setEditMode(true)}
+                                    className="fw-bold"
+                                >
+                                    <PencilSquare className="me-2" />
+                                    Modifica
+                                </Button>
+                            )}
+                       </div>
                     </Card.Header>
 
                     <Card.Body>
@@ -225,9 +237,9 @@ const UserProfile = () => {
                             </Col>
 
                             <Col md={9}>
-                                <Form className="text-light">
+                                <Form>
                                     <Row className="mb-3">
-                                        <Col md={6}>
+                                        <Col md={6} className="mb-3">
                                             <Form.Group>
                                                 <Form.Label>Nome</Form.Label>
                                                 <Form.Control
@@ -239,7 +251,7 @@ const UserProfile = () => {
                                                 />
                                             </Form.Group>
                                         </Col>
-                                        <Col md={6}>
+                                        <Col md={6} className="mb-3">
                                             <Form.Group>
                                                 <Form.Label>Cognome</Form.Label>
                                                 <Form.Control
@@ -251,10 +263,8 @@ const UserProfile = () => {
                                                 />
                                             </Form.Group>
                                         </Col>
-                                    </Row>
 
-                                    <Row className="mb-3">
-                                        <Col md={6}>
+                                        <Col md={6} className="mb-3">
                                             <Form.Group>
                                                 <Form.Label>Email</Form.Label>
                                                 <Form.Control
@@ -266,7 +276,7 @@ const UserProfile = () => {
                                                 />
                                             </Form.Group>
                                         </Col>
-                                        <Col md={6}>
+                                        <Col md={6} className="mb-3">
                                             <Form.Group>
                                                 <Form.Label>Data di Nascita</Form.Label>
                                                 <Form.Control
@@ -275,6 +285,20 @@ const UserProfile = () => {
                                                     value={user ? user.dataDiNascita : "1999-01-01"}
                                                     onChange={handleChange}
                                                     disabled={!editMode}
+                                                />
+                                            </Form.Group>
+                                        </Col>
+
+                                        <Col md={6} className="mb-3">
+                                            <Form.Group>
+                                                <Form.Label>Password</Form.Label>
+                                                <Form.Control
+                                                    type= "text"
+                                                    name="password"
+                                                    value={!editMode ? "***********" : user.password}
+                                                    onChange={handleChange}
+                                                    disabled={!editMode}
+                                                    placeholder="Inserisci nuova password"
                                                 />
                                             </Form.Group>
                                         </Col>

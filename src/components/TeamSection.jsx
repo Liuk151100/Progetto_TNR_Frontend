@@ -57,7 +57,7 @@ export default function TeamSection() {
                                         {pilot.dataDiNascita}
                                     </Card.Text>
                                     <Card.Text>
-                                        {pilot.ruolo!= "admin" ? `${pilot.ruolo} ${pilot.categoria}`:"Presidente e pilota di kart"}
+                                        {pilot.ruolo!= "Admin" ? `${pilot.ruolo} ${pilot.categoria}`:"Presidente e pilota di kart"}
                                     </Card.Text>
                                 </Card.Body>
                             </Card>

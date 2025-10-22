@@ -102,8 +102,8 @@ export default function Header() {
               </Nav.Link>
 
               <Nav.Link
-                key="safe"
-                href="safe"
+                key="safeguarding"
+                href="safeguarding"
                 style={{ fontSize: "1em", fontWeight: "bold", marginRight: "1.5rem" }}
               >
                 SAFEGUARDING

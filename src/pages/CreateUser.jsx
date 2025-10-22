@@ -219,7 +219,7 @@ const CreateUser = () => {
                                                     style={{ maxWidth: "456px", fontSize: "1rem", padding: "0.5rem" }}
                                                 >
                                                     <option value="" style={{ fontSize: "0.8rem", width: "10px" }}>Seleziona un ruolo</option>
-                                                    <option value="admin" style={{ fontSize: "0.8rem" }}>👑 Admin</option>
+                                                    <option value="Admin" style={{ fontSize: "0.8rem" }}>👑 Admin</option>
                                                     <option value="Pilota" style={{ fontSize: "0.8rem" }}>🏎️ Pilota</option>
                                                     <option value="Meccanico" style={{ fontSize: "0.8rem" }}>🔧 Meccanico</option>
                                                 </Form.Select>
