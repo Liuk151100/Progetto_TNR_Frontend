@@ -55,87 +55,101 @@ export default function Header() {
   const scrollToContactUs = () => {
     navigate("/")
     // Aspetta un attimo che la home venga renderizzata
-  setTimeout(() => {
-    window.scrollTo({
-      top: document.body.scrollHeight,
-      behavior: "smooth",
-    });
-  }, 500); // 0.5 secondi di ritardo (puoi regolare)
+    setTimeout(() => {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth",
+      });
+    }, 500); // 0.5 secondi di ritardo (puoi regolare)
   }
-  return (
-    <header>
-      <Navbar expand="lg" bg="light" className="px-3 py-2 shadow-sm">
-        <Container fluid className="d-flex align-items-center justify-content-between">
-          {/* LOGO */}
-          <Navbar.Brand href="/">
-            <img
-              src={logo}
-              alt="Logo"
-              style={{ height: "50px", width: "auto" }}
-            />
-          </Navbar.Brand>
 
-          {/* MOBILE: TOGGLE + USER MENU (sempre affianco al logo) */}
-          <div className="d-flex align-items-center d-lg-none ms-auto">
-            <UserMenu token={token} logout={logout} loggedUser={loggedUser} />
-            <Navbar.Toggle aria-controls="navbarResponsive" className="ms-2 border-0" />
-          </div>
+  const scrollToTeam = () => {
+    navigate("/");
 
-          {/* COLLAPSIBLE LINKS */}
-          <Navbar.Collapse id="navbarResponsive" className="mt-2 mt-lg-0 d-lg-flex flex-grow-1 justify-content-start">
-            <Nav className="my-2 my-lg-0" navbarScroll>
+    // Aspetta che la home venga renderizzata prima di scrollare
+    setTimeout(() => {
+      window.scrollTo({
+        top: 3150, // distanza in pixel dall'alto
+        behavior: "smooth",
+      });
+    }, 500);
+  }
 
-              <Nav.Link
-                key="team"
-                href="team"
-                style={{ fontSize: "1em", fontWeight: "bold", marginRight: "1.5rem" }}
-              >
-                TEAM
-              </Nav.Link>
+    return (
+      <header>
+        <Navbar expand="lg" bg="light" className="px-3 py-2 shadow-sm">
+          <Container fluid className="d-flex align-items-center justify-content-between">
+            {/* LOGO */}
+            <Navbar.Brand href="/">
+              <img
+                src={logo}
+                alt="Logo"
+                style={{ height: "50px", width: "auto" }}
+              />
+            </Navbar.Brand>
 
-              <Nav.Link
-                key="events"
-                href="events"
-                style={{ fontSize: "1em", fontWeight: "bold", marginRight: "1.5rem" }}
-              >
-                EVENTI
-              </Nav.Link>
+            {/* MOBILE: TOGGLE + USER MENU (sempre affianco al logo) */}
+            <div className="d-flex align-items-center d-lg-none ms-auto">
+              <UserMenu token={token} logout={logout} loggedUser={loggedUser} />
+              <Navbar.Toggle aria-controls="navbarResponsive" className="ms-2 border-0" />
+            </div>
 
-              <Nav.Link
-                key="safeguarding"
-                href="safeguarding"
-                style={{ fontSize: "1em", fontWeight: "bold", marginRight: "1.5rem" }}
-              >
-                SAFEGUARDING
-              </Nav.Link>
+            {/* COLLAPSIBLE LINKS */}
+            <Navbar.Collapse id="navbarResponsive" className="mt-2 mt-lg-0 d-lg-flex flex-grow-1 justify-content-start">
+              <Nav className="my-2 my-lg-0" navbarScroll>
 
-              <Nav.Link
-                key=""
-                href=""
-                onClick={scrollToContactUs}
-                style={{ fontSize: "1em", fontWeight: "bold", marginRight: "1.5rem" }}
-              >
-                CONTATTACI
-              </Nav.Link>
-              {token && loggedUser?.ruolo == "Admin" &&
                 <Nav.Link
-                  key="newUser"
-                  href="newUser"
+                  key="team"
+                  href=""
+                  onClick={() => scrollToTeam}
                   style={{ fontSize: "1em", fontWeight: "bold", marginRight: "1.5rem" }}
                 >
-                  CREA UTENTE
+                  TEAM
                 </Nav.Link>
-              }
 
-            </Nav>
+                <Nav.Link
+                  key="events"
+                  href="events"
+                  style={{ fontSize: "1em", fontWeight: "bold", marginRight: "1.5rem" }}
+                >
+                  EVENTI
+                </Nav.Link>
 
-            {/* DESKTOP: USER MENU a destra dei link */}
-            <div className="d-none d-lg-flex ms-auto">
-              <UserMenu token={token} logout={logout} loggedUser={loggedUser} />
-            </div>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-    </header >
-  );
-}
+                <Nav.Link
+                  key="safeguarding"
+                  href="safeguarding"
+                  style={{ fontSize: "1em", fontWeight: "bold", marginRight: "1.5rem" }}
+                >
+                  SAFEGUARDING
+                </Nav.Link>
+
+                <Nav.Link
+                  key="contactus"
+                  href=""
+                  onClick={() => scrollToContactUs}
+                  style={{ fontSize: "1em", fontWeight: "bold", marginRight: "1.5rem" }}
+                >
+                  CONTATTACI
+                </Nav.Link>
+                {token && loggedUser?.ruolo == "Admin" &&
+                  <Nav.Link
+                    key="newUser"
+                    href="newUser"
+                    style={{ fontSize: "1em", fontWeight: "bold", marginRight: "1.5rem" }}
+                  >
+                    CREA UTENTE
+                  </Nav.Link>
+                }
+
+              </Nav>
+
+              {/* DESKTOP: USER MENU a destra dei link */}
+              <div className="d-none d-lg-flex ms-auto">
+                <UserMenu token={token} logout={logout} loggedUser={loggedUser} />
+              </div>
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
+      </header >
+    );
+  }
