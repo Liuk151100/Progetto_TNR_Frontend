@@ -1,19 +1,21 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
   build: {
-    chunkSizeWarningLimit: 1000000, // 1MB di limite per sicurezza
+    chunkSizeWarningLimit: 1000000,
     rollupOptions: {
       output: {
-        manualChunks: {
-          // Sposta React e ReactDOM in un chunk separato
-          'react-vendor': ['react', 'react-dom'],
-          // Esempio: se usi librerie grandi, spostale in chunk separati
-          'chart-lib': ['chart.js'],
-          'router': ['react-router-dom'],
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            // ogni libreria avrà il suo chunk
+            return id
+              .toString()
+              .split('node_modules/')[1]
+              .split('/')[0]
+              .toString()
+          }
         },
       },
     },
