@@ -89,6 +89,10 @@ const CreateUser = () => {
             console.log(response)
             setMessage(response.data.message)
             setStatus(response.status)
+
+            setInterval(() => {
+                window.location.reload()
+            }, 1000);
             
             console.log("Dati aggiornati 1:", user);
         } catch (err) {

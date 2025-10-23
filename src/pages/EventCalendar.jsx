@@ -37,7 +37,7 @@ function EventCalendar() {
   // --- Controllo admin
   useEffect(() => {
     if (token && loggedUser) {
-      setIsAdmin(loggedUser.ruolo === "admin");
+      setIsAdmin(loggedUser.ruolo === "Admin");
     }
   }, [token, loggedUser]);
 
@@ -46,7 +46,7 @@ function EventCalendar() {
     const fetchEvents = async () => {
       try {
         const res = await axiosInstance.get("/events");
-        const formattedEvents = res.data.map(evt => ({
+        const formattedEvents = res.data.map((evt) => ({
           ...evt,
           start: new Date(evt.start),
           end: new Date(evt.end),
@@ -155,7 +155,7 @@ function EventCalendar() {
     if (!selectedEvent) return;
     try {
       await axiosInstance.delete(`/events/${selectedEvent._id}`);
-      setEvents(events.filter(evt => evt._id !== selectedEvent._id));
+      setEvents(events.filter((evt) => evt._id !== selectedEvent._id));
       setModalIsOpen(false);
       setSelectedEvent(null);
     } catch (err) {
@@ -181,9 +181,21 @@ function EventCalendar() {
   };
 
   return (
-    <div style={{ padding: "20px", height: "80vh", overflowY: "auto", display: "flex", flexDirection: "column" }}>
+    <div
+      style={{
+        padding: "20px",
+        height: "80vh",
+        overflowY: "auto",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <h2 className="text-center mb-3">Calendario Eventi</h2>
-      {!isAdmin && <p className="text-center text-muted">Modalità utente: sola lettura (con possibilità di partecipare)</p>}
+      {!isAdmin && (
+        <p className="text-center text-muted">
+          Modalità utente: sola lettura (con possibilità di partecipare)
+        </p>
+      )}
 
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
         <div style={{ width: "100%", maxWidth: "900px" }}>
@@ -219,81 +231,267 @@ function EventCalendar() {
         </div>
       </div>
 
+      {/* -------- MODALE STILIZZATA -------- */}
       <Modal
         isOpen={modalIsOpen}
-        onRequestClose={() => { setModalIsOpen(false); setSelectedEvent(null); }}
+        onRequestClose={() => {
+          setModalIsOpen(false);
+          setSelectedEvent(null);
+        }}
         contentLabel="Gestione Evento"
         style={{
-          overlay: { backgroundColor: "rgba(0,0,0,0.4)", zIndex: 9999 },
+          overlay: { backgroundColor: "rgba(0,0,0,0.5)", zIndex: 9999 },
           content: {
-            width: "350px",
+            width: "420px",
             maxWidth: "90vw",
-            padding: "20px",
-            borderRadius: "12px",
-            backgroundColor: "white",
+            padding: "24px 28px",
+            borderRadius: "16px",
+            backgroundColor: "#ffffff",
+            boxShadow: "0 8px 25px rgba(0, 0, 0, 0.2)",
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
+            border: "none",
+            display: "flex",
+            flexDirection: "column",
+            gap: "14px",
           },
         }}
       >
         {isAdmin ? (
           <>
-            <h3>{selectedEvent ? "Modifica Evento" : "Nuovo Evento"}</h3>
-            <input type="text" placeholder="Titolo evento"
-              value={newEvent.titolo}
-              onChange={(e) => setNewEvent({ ...newEvent, titolo: e.target.value })}
-              style={{ width: "100%", marginBottom: 10 }}
-            />
-            <input type="text" placeholder="Luogo evento"
-              value={newEvent.luogo}
-              onChange={(e) => setNewEvent({ ...newEvent, luogo: e.target.value })}
-              style={{ width: "100%", marginBottom: 10 }}
-            />
-            <p>Dal:</p>
-            <input type="datetime-local"
-              value={newEvent.start}
-              onChange={(e) => setNewEvent({ ...newEvent, start: e.target.value })}
-              style={{ width: "100%", marginBottom: 10 }}
-            />
-            <p>Al:</p>
-            <input type="datetime-local"
-              value={newEvent.end}
-              onChange={(e) => setNewEvent({ ...newEvent, end: e.target.value })}
-              style={{ width: "100%", marginBottom: 10 }}
-            />
+            <h3
+              style={{
+                textAlign: "center",
+                fontWeight: "600",
+                marginBottom: "10px",
+                color: "#333",
+              }}
+            >
+              {selectedEvent ? "Modifica Evento" : "Nuovo Evento"}
+            </h3>
 
-            <div style={{ marginTop: 12 }}>
-              <button onClick={handleSaveEvent} style={{ marginRight: "10px" }}>Salva</button>
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              <input
+                type="text"
+                placeholder="Titolo evento"
+                value={newEvent.titolo}
+                onChange={(e) => setNewEvent({ ...newEvent, titolo: e.target.value })}
+                style={{
+                  padding: "10px",
+                  borderRadius: "8px",
+                  border: "1px solid #ccc",
+                }}
+              />
+              <input
+                type="text"
+                placeholder="Luogo evento"
+                value={newEvent.luogo}
+                onChange={(e) => setNewEvent({ ...newEvent, luogo: e.target.value })}
+                style={{
+                  padding: "10px",
+                  borderRadius: "8px",
+                  border: "1px solid #ccc",
+                }}
+              />
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                <label style={{ fontWeight: "500", color: "#555" }}>Data inizio:</label>
+                <input
+                  type="datetime-local"
+                  value={newEvent.start}
+                  onChange={(e) => setNewEvent({ ...newEvent, start: e.target.value })}
+                  style={{
+                    padding: "10px",
+                    borderRadius: "8px",
+                    border: "1px solid #ccc",
+                  }}
+                />
+
+                <label style={{ fontWeight: "500", color: "#555" }}>Data fine:</label>
+                <input
+                  type="datetime-local"
+                  value={newEvent.end}
+                  onChange={(e) => setNewEvent({ ...newEvent, end: e.target.value })}
+                  style={{
+                    padding: "10px",
+                    borderRadius: "8px",
+                    border: "1px solid #ccc",
+                  }}
+                />
+              </div>
+            </div>
+
+            <div style={{ display: "flex", justifyContent: "space-between", marginTop: "18px" }}>
+              <button
+                onClick={handleSaveEvent}
+                style={{
+                  backgroundColor: "#007bff",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "8px",
+                  padding: "10px 16px",
+                  cursor: "pointer",
+                  flex: 1,
+                  marginRight: "8px",
+                  fontWeight: "500",
+                }}
+              >
+                💾 Salva
+              </button>
+
               {selectedEvent && (
-                <button onClick={handleDeleteEvent} style={{ marginRight: "10px", color: "red" }}>Elimina</button>
+                <button
+                  onClick={handleDeleteEvent}
+                  style={{
+                    backgroundColor: "#dc3545",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "8px",
+                    padding: "10px 16px",
+                    cursor: "pointer",
+                    flex: 1,
+                    marginRight: "8px",
+                    fontWeight: "500",
+                  }}
+                >
+                  🗑️ Elimina
+                </button>
               )}
-              <button onClick={() => { setModalIsOpen(false); setSelectedEvent(null); }}>Annulla</button>
+
+              <button
+                onClick={() => {
+                  setModalIsOpen(false);
+                  setSelectedEvent(null);
+                }}
+                style={{
+                  backgroundColor: "#6c757d",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "8px",
+                  padding: "10px 16px",
+                  cursor: "pointer",
+                  flex: 1,
+                  fontWeight: "500",
+                }}
+              >
+                ✖️ Annulla
+              </button>
             </div>
           </>
         ) : (
           <>
-            <h3>{selectedEvent?.titolo}</h3>
-            <p>
-              Dal: {selectedEvent?.start?.toLocaleString()} <br />
-              Al: {selectedEvent?.end?.toLocaleString()} <br />
-              Luogo: {selectedEvent?.luogo} <br />
-            </p>
-            <div>
-              Partecipanti: {listaPartecipanti.length > 0 ? (
-                <ul>{listaPartecipanti.map((p, idx) => <li key={idx}>{p.nome} {p.cognome}</li>)}</ul>
-              ) : <span>Nessun partecipante</span>}
+            <h3
+              style={{
+                textAlign: "center",
+                fontWeight: "600",
+                marginBottom: "10px",
+                color: "#333",
+              }}
+            >
+              {selectedEvent?.titolo}
+            </h3>
+
+            <div
+              style={{
+                background: "#f8f9fa",
+                borderRadius: "10px",
+                padding: "12px",
+                marginBottom: "10px",
+              }}
+            >
+              <p style={{ margin: 0, color: "#444" }}>
+                📅 <strong>Dal:</strong> {selectedEvent?.start?.toLocaleString()}
+                <br />
+                🕒 <strong>Al:</strong> {selectedEvent?.end?.toLocaleString()}
+                <br />
+                📍 <strong>Luogo:</strong> {selectedEvent?.luogo}
+              </p>
             </div>
-            <div style={{ marginTop: 12 }}>
-              <button onClick={handleJoinEvent} disabled={!loggedUser} style={{ marginRight: "10px" }}>Partecipa</button>
-              <button onClick={() => { setModalIsOpen(false); setSelectedEvent(null); }}>Chiudi</button>
-              {!loggedUser && (
-                <div className="alert alert-danger my-3 text-center">
-                  Effettua il login per dare la conferma di partecipazione
-                  <Button variant="dark" size="md" as={Link} to="/Login" className="me-3 fw-bold my-3" style={{ borderRadius: "20px" }}>Login</Button>
-                </div>
+
+            <div>
+              <strong>Partecipanti:</strong>
+              {listaPartecipanti.length > 0 ? (
+                <ul style={{ marginTop: "8px", marginLeft: "18px" }}>
+                  {listaPartecipanti.map((p, idx) => (
+                    <li key={idx}>
+                      {p.nome} {p.cognome}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p style={{ color: "#888" }}>Nessun partecipante</p>
               )}
             </div>
+
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "10px",
+                marginTop: "18px",
+              }}
+            >
+              <button
+                onClick={handleJoinEvent}
+                disabled={!loggedUser}
+                style={{
+                  backgroundColor: loggedUser ? "#28a745" : "#ccc",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "8px",
+                  padding: "10px 16px",
+                  cursor: loggedUser ? "pointer" : "not-allowed",
+                  fontWeight: "500",
+                }}
+              >
+                ✅ Partecipa
+              </button>
+
+              <button
+                onClick={() => {
+                  setModalIsOpen(false);
+                  setSelectedEvent(null);
+                }}
+                style={{
+                  backgroundColor: "#6c757d",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "8px",
+                  padding: "10px 16px",
+                  cursor: "pointer",
+                  fontWeight: "500",
+                }}
+              >
+                ✖️ Chiudi
+              </button>
+            </div>
+
+            {!loggedUser && (
+              <div
+                className="alert alert-warning mt-3 text-center"
+                style={{
+                  borderRadius: "10px",
+                  backgroundColor: "#fff3cd",
+                  color: "#856404",
+                  padding: "12px",
+                }}
+              >
+                <p style={{ marginBottom: "8px" }}>
+                  Effettua il login per partecipare all’evento.
+                </p>
+                <Button
+                  variant="dark"
+                  size="md"
+                  as={Link}
+                  to="/Login"
+                  className="fw-bold"
+                  style={{ borderRadius: "20px" }}
+                >
+                  🔐 Login
+                </Button>
+              </div>
+            )}
           </>
         )}
       </Modal>

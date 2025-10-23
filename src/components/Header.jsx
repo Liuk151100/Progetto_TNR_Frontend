@@ -117,7 +117,7 @@ export default function Header() {
               >
                 CONTATTACI
               </Nav.Link>
-              {token && loggedUser?.ruolo == "admin" &&
+              {token && loggedUser?.ruolo == "Admin" &&
                 <Nav.Link
                   key="newUser"
                   href="newUser"
