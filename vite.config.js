@@ -6,29 +6,6 @@ export default defineConfig({
   plugins: [react()],
   build: {
     chunkSizeWarningLimit: 100000000000, 
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          // React core
-          react: ['react', 'react-dom'],
-
-          // Routing
-          router: ['react-router-dom'],
-
-          // UI framework
-          bootstrap: ['bootstrap', 'react-bootstrap', 'bootstrap-icons', 'react-bootstrap-icons'],
-
-          // Calendari pesanti
-          calendar: [
-            'react-big-calendar',
-            '@fullcalendar/react',
-            '@fullcalendar/daygrid'
-          ],
-
-          // Utility
-          utils: ['axios', 'date-fns', 'react-modal', 'react-spinners'],
-        },
-      },
-    },
+  
   },
 })
