@@ -17,7 +17,7 @@ export default function Home() {
     setTimeout(() => {
       window.scrollTo({ top: 2600, behavior: "smooth" });
     }, 500);
-    navigate("/")
+    navigate("/",{ state: undefined })
 
   }
 

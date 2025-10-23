@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Navbar, Nav, Container, Button, NavDropdown } from "react-bootstrap";
 import { PersonCircle } from "react-bootstrap-icons";
 import { useAuthContext } from "../contexts/authContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import logo from "../assets/Loghi/LOGO-VETTORIALE-NEW-RACING.svg";
 
 
@@ -67,18 +67,24 @@ export default function Header() {
     navigate("/", { state: { scrollTo: "team" } });
   }
 
+  const goToHome = () => {
+    navigate("/", {state: undefined})
+  }
+
   return (
     <header>
       <Navbar expand="lg" bg="light" className="px-3 py-2 shadow-sm">
         <Container fluid className="d-flex align-items-center justify-content-between">
           {/* LOGO */}
-          <Navbar.Brand href="/">
-            <img
-              src={logo}
-              alt="Logo"
-              style={{ height: "50px", width: "auto" }}
-            />
-          </Navbar.Brand>
+          <Nav.Link onClick={goToHome}>
+            <Navbar.Brand>
+              <img
+                src={logo}
+                alt="Logo"
+                style={{ height: "50px", width: "auto" }}
+              />
+            </Navbar.Brand>
+          </Nav.Link>
 
           {/* MOBILE: TOGGLE + USER MENU (sempre affianco al logo) */}
           <div className="d-flex align-items-center d-lg-none ms-auto">
