@@ -5,6 +5,17 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   build: {
-    chunkSizeWarningLimit: 1000000, // ad esempio, 2000 = 2 MB
+    chunkSizeWarningLimit: 1000000, // 1MB di limite per sicurezza
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Sposta React e ReactDOM in un chunk separato
+          'react-vendor': ['react', 'react-dom'],
+          // Esempio: se usi librerie grandi, spostale in chunk separati
+          'chart-lib': ['chart.js'],
+          'router': ['react-router-dom'],
+        },
+      },
+    },
   },
 })
