@@ -3,7 +3,6 @@ import { Navbar, Nav, Container, Button, NavDropdown } from "react-bootstrap";
 import { PersonCircle } from "react-bootstrap-icons";
 import { useAuthContext } from "../contexts/authContext";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import logo from "../assets/Loghi/LOGO-VETTORIALE-NEW-RACING.svg";
 
 
 
@@ -79,7 +78,7 @@ export default function Header() {
           <Nav.Link onClick={goToHome}>
             <Navbar.Brand>
               <img
-                src={logo}
+                src="/Loghi/LOGO-VETTORIALE-NEW-RACING.svg"
                 alt="Logo"
                 style={{ height: "50px", width: "auto" }}
               />
