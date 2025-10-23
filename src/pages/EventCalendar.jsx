@@ -174,9 +174,10 @@ function EventCalendar() {
   const handleJoinEvent = async () => {
     if (!loggedUser?._id) return alert("Devi effettuare il login");
     try {
-      await axiosInstance.patch(`/events/${selectedEvent._id}/join`, { userId: loggedUser._id });
+      const response = await axiosInstance.patch(`/events/${selectedEvent._id}/join`, { userId: loggedUser._id });
       setModifyEvent(true);
-      setTextAlert(`Hai confermato la partecipazione a: ${selectedEvent.titolo}`);
+      console.log(response)
+      setTextAlert(`${response.data.message} a: ${selectedEvent.titolo}`);
       setModal2IsOpen(true)
     } catch (err) {
       console.error(err);
@@ -386,7 +387,7 @@ function EventCalendar() {
                 ✖️ Annulla
               </button>
             </div>
-            
+
             <div>
               <strong>Partecipanti:</strong>
               {listaPartecipanti.length > 0 ? (
