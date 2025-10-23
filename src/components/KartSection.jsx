@@ -4,11 +4,11 @@ import { Button, Container } from "react-bootstrap";
 export default function KartSection() {
     // Lista delle immagini presenti nella cartella assets
     const images = [
-        "./src/assets/KartSection/N5N_0405.jpg",
-        "./src/assets/KartSection/N5N_0266.jpg",
-        "./src/assets/KartSection/N5N_0427.jpg",
-        "./src/assets/KartSection/NI5_6177.jpg",
-        "./src/assets/KartSection/NI5_8193.jpg",
+        "./assets/KartSection/N5N_0405.jpg",
+        "./assets/KartSection/N5N_0266.jpg",
+        "./assets/KartSection/N5N_0427.jpg",
+        "./assets/KartSection/NI5_6177.jpg",
+        "./assets/KartSection/NI5_8193.jpg",
     ];
 
     const [currentImage, setCurrentImage] = useState(images[0]);

@@ -4,15 +4,15 @@ import { Button, Container } from "react-bootstrap";
 export default function LegendsSection() {
     // Lista delle immagini presenti nella cartella assets
     const images = [
-        "./src/assets/LegendCarsSection/1760559733445.jpg",
-        "./src/assets/LegendCarsSection/1760559733488.jpg",
-        "./src/assets/LegendCarsSection/1760559733545.jpg",
-        "./src/assets/LegendCarsSection/1760559733734.jpg",
-        "./src/assets/LegendCarsSection/1760559733760.jpg",
-        "./src/assets/LegendCarsSection/1760559733863.jpg",
-        "./src/assets/LegendCarsSection/1760559733894.jpg",
-        "./src/assets/LegendCarsSection/1760559733925.jpg",
-        "./src/assets/LegendCarsSection/1760559733945.jpg",
+        "./assets/LegendCarsSection/1760559733445.jpg",
+        "./assets/LegendCarsSection/1760559733488.jpg",
+        "./assets/LegendCarsSection/1760559733545.jpg",
+        "./assets/LegendCarsSection/1760559733734.jpg",
+        "./assets/LegendCarsSection/1760559733760.jpg",
+        "./assets/LegendCarsSection/1760559733863.jpg",
+        "./assets/LegendCarsSection/1760559733894.jpg",
+        "./assets/LegendCarsSection/1760559733925.jpg",
+        "./assets/LegendCarsSection/1760559733945.jpg",
     ];
 
     const [currentImage, setCurrentImage] = useState(images[0]);
