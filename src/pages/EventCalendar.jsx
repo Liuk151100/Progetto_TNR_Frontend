@@ -28,6 +28,8 @@ function EventCalendar() {
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modal2IsOpen, setModal2IsOpen] = useState(false);
+  const [textAlert, setTextAlert] = useState("");
   const [newEvent, setNewEvent] = useState({ titolo: "", start: "", end: "", luogo: "" });
   const [view, setView] = useState("month");
   const [isAdmin, setIsAdmin] = useState(false);
@@ -55,7 +57,8 @@ function EventCalendar() {
         setModifyEvent(false);
       } catch (err) {
         console.error(err);
-        alert("Errore durante il recupero degli eventi.");
+        setTextAlert("Errore durante il recupero degli eventi.");
+        setModal2IsOpen(true)
       }
     };
     if (modifyEvent) fetchEvents();
@@ -117,7 +120,8 @@ function EventCalendar() {
   // --- Salvataggio evento
   const handleSaveEvent = async () => {
     if (!newEvent.titolo || !newEvent.start || !newEvent.end || !newEvent.luogo) {
-      alert("Tutti i campi sono obbligatori!");
+      setTextAlert("Tutti i campi sono obbligatori!");
+      setModal2IsOpen(true)
       return;
     }
 
@@ -146,7 +150,8 @@ function EventCalendar() {
       setSelectedEvent(null);
     } catch (err) {
       console.error(err);
-      alert("Errore durante il salvataggio dell'evento");
+      setTextAlert("Errore durante il salvataggio dell'evento");
+      setModal2IsOpen(true)
     }
   };
 
@@ -160,7 +165,8 @@ function EventCalendar() {
       setSelectedEvent(null);
     } catch (err) {
       console.error(err);
-      alert("Errore durante la cancellazione dell'evento.");
+      setTextAlert("Errore durante la cancellazione dell'evento.");
+      setModal2IsOpen(true)
     }
   };
 
@@ -170,10 +176,12 @@ function EventCalendar() {
     try {
       await axiosInstance.patch(`/events/${selectedEvent._id}/join`, { userId: loggedUser._id });
       setModifyEvent(true);
-      alert(`Hai confermato la partecipazione a: ${selectedEvent.titolo}`);
+      setTextAlert(`Hai confermato la partecipazione a: ${selectedEvent.titolo}`);
+      setModal2IsOpen(true)
     } catch (err) {
       console.error(err);
-      alert("Errore durante la registrazione alla partecipazione.");
+      setTextAlert("Errore durante la registrazione alla partecipazione.");
+      setModal2IsOpen(true)
     } finally {
       setModalIsOpen(false);
       setSelectedEvent(null);
@@ -378,6 +386,21 @@ function EventCalendar() {
                 ✖️ Annulla
               </button>
             </div>
+            
+            <div>
+              <strong>Partecipanti:</strong>
+              {listaPartecipanti.length > 0 ? (
+                <ul style={{ marginTop: "8px", marginLeft: "18px" }}>
+                  {listaPartecipanti.map((p, idx) => (
+                    <li key={idx}>
+                      {p.nome} {p.cognome}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p style={{ color: "#888" }}>Nessun partecipante</p>
+              )}
+            </div>
           </>
         ) : (
           <>
@@ -495,6 +518,61 @@ function EventCalendar() {
           </>
         )}
       </Modal>
+
+       {/* -------- MODALE DI AVVISO -------- */}
+      <Modal
+        isOpen={modal2IsOpen}
+        onRequestClose={() => setModal2IsOpen(false)}
+        contentLabel="Avviso"
+        style={{
+          overlay: { backgroundColor: "rgba(0,0,0,0.4)", zIndex: 10000 },
+          content: {
+            width: "380px",
+            maxWidth: "90vw",
+            padding: "24px",
+            borderRadius: "16px",
+            backgroundColor: "#ffffff",
+            boxShadow: "0 8px 25px rgba(0, 0, 0, 0.2)",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            border: "none",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            textAlign: "center",
+            gap: "16px",
+          },
+        }}
+      >
+        <h4 style={{ color: "#333", fontWeight: "600" }}>⚠️ Attenzione</h4>
+        <p
+          style={{
+            color: textAlert.toLowerCase().includes("errore") ? "#dc3545" : "#28a745",
+            margin: "0",
+          }}
+        >
+          {textAlert}
+        </p>
+
+        <button
+          onClick={() => setModal2IsOpen(false)}
+          style={{
+            backgroundColor: "#007bff",
+            color: "white",
+            border: "none",
+            borderRadius: "8px",
+            padding: "10px 20px",
+            cursor: "pointer",
+            fontWeight: "500",
+            marginTop: "10px",
+          }}
+        >
+          OK
+        </button>
+      </Modal>
+
     </div>
   );
 }
