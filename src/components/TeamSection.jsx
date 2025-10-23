@@ -41,7 +41,7 @@ export default function TeamSection() {
                             className="d-flex justify-content-center"
                         >
                             <Card className="pilot-card shadow-sm">
-                                <div className="pilot-img-wrapper">
+                                <div className="pilot-img-wrapper" style={{height:"80%"}}>
                                     <Card.Img
                                         variant="top"
                                         src={pilot.avatar || "/placeholder.jpg"}
