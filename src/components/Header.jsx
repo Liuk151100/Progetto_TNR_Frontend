@@ -3,7 +3,7 @@ import { Navbar, Nav, Container, Button, NavDropdown } from "react-bootstrap";
 import { PersonCircle } from "react-bootstrap-icons";
 import { useAuthContext } from "../contexts/authContext";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import logo from "../assets/Loghi/LOGO-VETTORIALE-NEW-RACING.svg";
+import logo from "./assets/Loghi/LOGO-VETTORIALE-NEW-RACING.svg";
 
 
 
